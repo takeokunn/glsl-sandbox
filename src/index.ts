@@ -41,7 +41,7 @@ const createProgram = (vs: WebGLShader, fs: WebGLShader): WebGLProgram | void =>
     return program;
 };
 
-const createVbo = (data: number[]) => {
+const createVbo = (data: number[]): WebGLBuffer => {
     const vbo: WebGLBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
@@ -55,14 +55,14 @@ const fragShader = createShader(ShaderType.fragment, frag) as WebGLShader;
 const program = createProgram(vertShader, fragShader) as WebGLProgram;
 
 const attLocation: GLint = gl.getAttribLocation(program, 'position');
-const attStride = 3;
-const vertexPosition = [
+const attStride: number = 3;
+const vertexPosition: number[] = [
     0.0, 1.0, 0.0,
     1.0, 0.0, 0.0,
    -1.0, 0.0, 0.0
 ];
 
-const vbo = createVbo(vertexPosition);
+const vbo: WebGLBuffer = createVbo(vertexPosition);
 gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
 gl.enableVertexAttribArray(attLocation);
 gl.vertexAttribPointer(attLocation, attStride, gl.FLOAT, false, 0, 0);
@@ -77,7 +77,7 @@ mat.perspective(90, canvas.width / canvas.height, 0.1, 100, pMatrix);
 mat.multiply(pMatrix, vMatrix, mvpMatrix);
 mat.multiply(mvpMatrix, mMatrix, mvpMatrix);
 
-const uniLocation = gl.getUniformLocation(program, 'mvpMatrix');
+const uniLocation: WebGLUniformLocation = gl.getUniformLocation(program, 'mvpMatrix');
 gl.uniformMatrix4fv(uniLocation, false, mvpMatrix);
 gl.drawArrays(gl.TRIANGLES, 0, 3);
 gl.flush();
